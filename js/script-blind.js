@@ -36,15 +36,8 @@ const buttonList = document.querySelector('.link-list');
 //
 //
 Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students 
-   1. Pass-in the complete dataAOO?
-
-*/
-function showPage(listAOO, pageINT) {
-   //
-}
-
-function showPageBlind () {
+This function will create and insert/append the elements needed to display a "page" of nine students */
+function showPage () {
    const ul = document.querySelector('.student-list');
    const listOffset = 9*(page-1);
 
@@ -97,7 +90,7 @@ function addPagination() {
 }
 
 // Call functions
-showPageBlind();
+showPage();
 addPagination();
 
 //Pagination Buttons
@@ -107,5 +100,5 @@ buttonList.addEventListener('click', (e) => {
    if(button.tagName==='BUTTON') {
       localStorage.page=Number(button.textContent);
    }
-   location.reload();  //use .innerHTML="" instead
+   location.reload();
 });
