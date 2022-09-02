@@ -1,19 +1,40 @@
-showPage() {
 
+
+showPage(list, page) {
+  if list is empty
+    Show "No results found." on page instead of a list
 }
 
-addPagination() {
+addPagination(list) {
 
+  pageButtonListener(list) {
+
+    Set pageNumber to selected button number
+    showPage(list, pageNumber)
+  }
 }
 
 addSearch() {
 
 }
 
-pageButtonListener() {
-  
+search(searchText) {
+  loop through entire listAOO
+    if name contains searchText
+      add object to listAOOFiltered
+  return listAOOFiltered
 }
 
-searchListener() {
-
+searchListener(on keyup, click search) {
+  if searchBar is empty
+    Set listAOOFiltered = data
+  if searchBar is not empty
+    Set listAOOFiltered <= search(searchText)
+  Call addPagination(listAOOFiltered)
 }
+
+clearSearchButtonListener () {
+
+  Set pageNumber to 1
+}
+
