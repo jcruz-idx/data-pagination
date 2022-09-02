@@ -1,15 +1,13 @@
-/*
-Treehouse Techdegree:
-FSJS Project 2 - Data Pagination and Filtering
-*/
-
-
-
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
+/**
+ * @description Treeheouse Techdegree: FSJS Project 2 - Data Pagination and Filtering
+ * For assistance: Check out the "Project Resources" section of the Instructions tab:
+ * https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
+ * Reach out in your Slack community: 
+ * https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2.
+ * 
+ * @author Joel Cruz
+ * @since 1.0.0
+ */
 
 /**
  * Clear White Space - Reformats template literal HTML string.
@@ -30,11 +28,11 @@ const max = data.length;
 if(localStorage.getItem('page')==null) { localStorage.page = page = 1; }
 else { page = localStorage.page };
 /**
- * Temporary, global (g) array of student-objects to hold filtered (f) list.
+ * Temporary, global (g) array of student-objects to hold filtered list.
  * @global
- * @typedef {Array.student} list
+ * @typedef {Array.student} gList
  */
-let list = data;
+let gList = data;
 
 /**
  * Show Page Function - Create, insert HTML for list of 9 students to be shown on page.
@@ -115,11 +113,9 @@ function addPagination(list) {
       const button = e.target;
       const activeButton = document.querySelector('.active');
       
-      /**
-       * Pagination Button Guard Clause
-       * 1. Filter clicks on link-list ul.
-       * 2. Change active button.
-       */
+      //Pagination Button Guard Clause
+      //  1. Filter clicks on link-list ul.
+      //  2. Change active button.
       if(button.tagName==='BUTTON') {
          activeButton.classList.remove('active');
          button.classList.add('active');
@@ -147,70 +143,99 @@ function addSearch() {
    header.insertAdjacentHTML('beforeend', html);
 }
 
-/**
- * Main Function Calls
- */
+
+//Main Function Calls
 showPage(data, page);
 addPagination(data);
 addSearch();
 
-/**
- * Gobal Variable Declarations (2/2) - Must declare after Search HTML is set.
- */
+//Gobal Variable Declarations (2/2) - Must declare after Search HTML is set.
 const searchArea = document.querySelector('.student-search');
 
 /**
- * Search List - 
+ * Search List - Search for input substring in names from complete data set and build global, 
+ * filtered list (gList)
  *    1. Clear global, filtered list array of student-objects [AOO]
  *    2. Search for input substring in names from data AOO.
  *    3. Push matches onto global, filtered list AOO.
  * @param {string} input
  */
 function search(input) {
-   list = [];
+   gList = [];
    let name='';
    ss = input.value;  //substring
    const re = new RegExp(`${ss}`, 'i');  //Ignore case flag set with 'i'
 
-   //[  ](!!!)Storm method that does not require looping through entire list every time
+   /**
+    * @todo Storm method that does not need entire data set every time
+    */
    //Search
    for(i=0;i<max;i++) {
       name = `${data[i].name.first} ${data[i].name.last}`;
       if(name.search(re)!==-1)
-         list.push(data[i]);
+         gList.push(data[i]);
    }
 }
 
-//Listener to search and reset HTML on keyup
+/**
+ * Search Input Listener - Search for substring, reset HTML on search input keyup.
+ * 1. Listen for keyup in student-search label; filtered for input element.
+ * 2. Call search() to search for input substring.
+ * 3. Reset and display filtered page.
+ * @event label.student-search#keyup - Filter for input element keyups in label.
+ * @param {keyup} e - Keyup in label.student-search.
+ * @listens keyup
+ */
 searchArea.addEventListener('keyup', (e) => {
    const input = e.target;
 
+   /**
+    * Input Element Guard Clause - Filter for input element keyups.
+    */
    if(input.tagName==='INPUT') {
       search(input);
       localStorage.page = page = 1;
-      showPage(list, 1);
-      addPagination(list);
+      showPage(gList, 1);
+      addPagination(gList);
    }
 });
 
-//Listener to search and reset HTML on click
+/**
+ * Search Button Listener - Search for substring, reset HTML on search button click.
+ * 1. Listen for click on student-search label; filtered for button.
+ * 2. Call search() to search for input substring.
+ * 3. Reset and display filtered page.
+ * @event label.student-search#click - Filter for button element clicks in label.
+ * @param {click} e - Keyup in label.student-search.
+ * @listens click
+ */
 searchArea.addEventListener('click', (e) => {
    const button = e.target;
    let input;
 
+   
+   //Button Guard Clause - Filter for clicks on button area.  Handle clicks that land on 
+   //  both "button" and "img" representing the button
    if(button.tagName==='BUTTON' || button.tagName==='IMG'){
       if(button.tagName==='BUTTON') input = button.previousSibling;
       else input = button.parentNode.previousSibling;
       
       search(input);
       localStorage.page = page = 1;
-      showPage(list, 1);
-      addPagination(list);
+      showPage(gList, 1);
+      addPagination(gList);
    }
 });
 
-//Reset to page 1 to follow rubric, uncomment "if" to make use of localStorage
+/**
+ * Unload Listener - Reset pagination page number, stored locally, to 1 per Teamtreehouse 
+ * rubric.
+ * @event window#beforeunload - Filter for button element clicks in label.
+ */
 window.addEventListener("beforeunload", () => {
+   /**
+    * @todo Uncomment "if" statement to reimplement page number local storage
+    */
    //if(list.length!==data.length)
       localStorage.page = 1;
 });
